@@ -5,10 +5,20 @@ length of the string. (Note: If implementing in Java, please use a character arr
 perform this operation in place.)
 
 EXAMPLE
-Input: "Mr John Smith ", 13
+Input: "Mr John Smith     ", 13
 Output: "Mr%20John%20Smith"
 '''
 
 '''
-
+What if there are consecutive white spaces? I'm assuming we replace literally each white space with '%20'
+We can't include the white space at the end of the string to be replaced since that's the extra space alotted for the replacement
+    - We could use a function that strips trailing white space
 '''
+
+
+def urlify(str):
+    return str.strip().replace(' ', '%20')
+
+
+input = 'Mr John Smith'
+assert urlify(input) == 'Mr%20John%20Smith'
