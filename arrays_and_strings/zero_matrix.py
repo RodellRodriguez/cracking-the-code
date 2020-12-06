@@ -20,9 +20,10 @@ turns into
 
 
 The main idea is to look at each value and place markers to determinate which row and columns
-have a 0 so after we look at each value, we overwrite with 0's whereever the markers say so.
+have a 0 so after we look at each value, we overwrite with 0's wherever the markers say so.
 Now we could do this with O(M*N) space complexity by marking down each row,col in a seperate matrix.
 Then at the end we use this 2nd matrix to zero out where needed in the original matrix.
+Time Complexity is O(M*N)
 
 We could reduce the space complexity to O(N) by eliminating this second matrix and use two arrays where one array
 tracks the index of the row that needs to be zeroed and then another array that tracks the index of the columns that need to be zeroed.
@@ -34,15 +35,18 @@ create a boolean that tracks if there's a zero in the first row and a boolean th
 in that first column. The first row will be the markers to zero out any columns and the first column will be the markers
 that will zero out any of the rows. We scan the rest of the matrix as normal and overwrite the first row and column
 with 0's anytime we come across a 0.
+
+This was a very tricky problem if you aim for O(1) space complexity. You really really need to keep track of your indicies.
 '''
 
 def zero_matrix(matrix):
     '''
-    - Check if there are any zeroes in the first row or column. Note that the first row actually tracks the columns to zero out
-    and the first column tracks all of the rows to zero out
+    - Check if there are any zeroes in the first row or column. Note that the first row actually tracks
+    the columns to overwrite 0's and the first column tracks all of the rows to overwrite 0's
     - Scan the rest of the matrix (not the first row or column) and if we see a 0 at i,j
     then overwrite first_row[0][j] = 0 and overwrite first_column[i,0] = 0
-    - Scan first_row and at every [0][j] then run zero_column(matrix, j)
+    - Scan first_row (starting at index 1 not 0, we leave index 0 for the end) and at every [0][j]
+    then run zero_column(matrix, j)
     - Do the same but for first_column respectively
     - If there was a zero in either the first row or column back from step 1 then zero out the first column and/or
     row respectively
@@ -64,11 +68,12 @@ def zero_matrix(matrix):
                 matrix[0][j] = 0
                 # set row marker to 0 for corresponding row
                 matrix[i][0] = 0
-    for j in range(len(matrix[0])):
+    # Zero out the columns except for column 0, leave that for the end
+    for j in range(1, len(matrix[0])):
         if matrix[0][j] == 0:
             zero_column(matrix, j)
-    import pdb; pdb.set_trace()
-    for i in range(len(matrix)):
+    # Zero out the rows except for row 0, leave that for the end
+    for i in range(1, len(matrix)):
         if matrix[i][0] == 0:
             zero_row(matrix, i)
     if row_marker_has_zero:
@@ -90,5 +95,4 @@ def zero_column(matrix, col):
 
 
 matrix = [[0,1,2],[1,4,5],[2,0,3],[1,2,2]]
-print(zero_matrix(matrix))
 assert zero_matrix(matrix) == [[0,0,0],[0,0,5],[0,0,0],[0,0,2]]
