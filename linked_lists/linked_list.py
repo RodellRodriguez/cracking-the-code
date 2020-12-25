@@ -7,16 +7,22 @@ class LinkedList:
     def __init__(self):
         self.head = None
 
-    def insert(self, data): # inserts new node at the end of the LL
-        new_node = Node(data)
-        if not self.head:
-            self.head = new_node
-        else:
-            # never manipulate self.head directly since we always want access to the head of the LL
-            current_node = self.head
-            while current_node.next:
-                current_node = current_node.next
-            current_node.next = new_node
+    def insert(self, data=None, data_list=None): # inserts new node at the end of the LL
+        def _insert(data):
+            new_node = Node(data)
+            if not self.head:
+                self.head = new_node
+            else:
+                # never manipulate self.head directly since we always want access to the head of the LL
+                current_node = self.head
+                while current_node.next:
+                    current_node = current_node.next
+                current_node.next = new_node
+        if data:
+            _insert(data)
+        elif data_list:
+            for data in data_list:
+                _insert(data)
 
     def print(self):
         current_node = self.head
